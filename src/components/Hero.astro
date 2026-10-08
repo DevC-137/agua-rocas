@@ -1,0 +1,16 @@
+<section id="inicio" class="hero">
+  <div class="col">
+    <h1 class="reveal">Pureza que nace de las rocas</h1>
+    <p class="reveal">Agua fresca, ligera y cuidada en cada gota. Hidrátate con Las Rocas.</p>
+    <a class="btn reveal" href="#contacto">Pídela ahora</a>
+  </div>
+  <div class="olas"></div>
+</section>
+<style>
+  .hero { background: radial-gradient(circle at 80% 20%, #fff, var(--claro)); }
+  .olas { position: absolute; left: 0; right: 0; bottom: 0; height: 90px;
+    background: repeating-radial-gradient(circle at 50% 100%, transparent 0 28px, rgba(59,182,214,.25) 29px 31px);
+    background-size: 120px 100%; animation: ola 8s linear infinite; }
+  @keyframes ola { to { background-position: 120px 0; } }
+  @media (prefers-reduced-motion: reduce) { .olas { animation: none; } }
+</style>

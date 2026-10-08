@@ -1,0 +1,15 @@
+<div id="bottle">
+  <img src={`${import.meta.env.BASE_URL}botella.webp`} alt="Botella de agua Las Rocas" width="500" height="500" fetchpriority="high" decoding="async" />
+</div>
+<style>
+  #bottle {
+    position: fixed; left: 50%; top: 50%; z-index: 1; pointer-events: none;
+    height: 76vh; aspect-ratio: 1;
+    transform: translate(-50%, -50%);
+  }
+  img {
+    width: 100%; height: 100%; object-fit: contain;
+    filter: drop-shadow(0 30px 45px rgba(75, 42, 155, 0.35));
+  }
+  @media (max-width: 800px) { #bottle { height: 52vh; opacity: 0.35; } }
+</style>

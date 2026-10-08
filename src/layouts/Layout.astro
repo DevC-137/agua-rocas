@@ -1,0 +1,72 @@
+---
+const { title = 'Las Rocas | Agua pura' } = Astro.props;
+---
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{title}</title>
+  <meta name="description" content="Las Rocas, agua pura de Huánuco." />
+  <meta name="generator" content={Astro.generator} />
+  <link rel="icon" href={`${import.meta.env.BASE_URL}favicon.ico`} />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <slot />
+  <script>
+    // Aparecer al hacer scroll
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e) => e.isIntersecting && e.target.classList.add('visible'));
+    }, { threshold: 0.2 });
+    document.querySelectorAll('.reveal').forEach((el) => io.observe(el));
+
+    // Botella: zigzag + leve rotación según el scroll
+    const bottle = document.getElementById('bottle');
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    function update() {
+      if (!bottle) return;
+      const max = document.documentElement.scrollHeight - innerHeight;
+      const p = max > 0 ? scrollY / max : 0;
+      const wide = innerWidth > 800;
+      const x = Math.cos(p * Math.PI * 3) * (wide ? 22 : 0); // vw
+      const rot = Math.sin(p * Math.PI * 3) * 10;
+      const scale = 1 + Math.sin(p * Math.PI) * 0.08;
+      bottle.style.transform = `translate(calc(-50% + ${x}vw), -50%) rotate(${rot}deg) scale(${scale})`;
+    }
+    if (bottle && !reduce) {
+      addEventListener('scroll', () => requestAnimationFrame(update), { passive: true });
+      addEventListener('resize', update);
+    }
+    update();
+  </script>
+</body>
+</html>
+
+<style is:global>
+  :root {
+    --morado: #4b2a9b; --verde: #7ac943; --aqua: #3bb6d6;
+    --claro: #eaf8fc; --texto: #14213d;
+  }
+  * { box-sizing: border-box; margin: 0; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Poppins', system-ui, sans-serif; color: var(--texto); background: var(--claro); overflow-x: hidden; }
+  section { min-height: 100vh; display: flex; align-items: center; padding: 6rem 8vw; position: relative; }
+  .col { width: 45%; position: relative; z-index: 2; }
+  .col.der { margin-left: auto; }
+  h1, h2 { font-weight: 800; line-height: 1.05; color: var(--morado); }
+  h1 { font-size: clamp(2.8rem, 7vw, 5.5rem); }
+  h2 { font-size: clamp(2rem, 4.5vw, 3.5rem); margin-bottom: 1rem; }
+  p { font-size: 1.1rem; line-height: 1.6; margin-top: 1rem; }
+  .btn { display: inline-block; margin-top: 2rem; padding: .9rem 2rem; border-radius: 999px; background: var(--verde); color: #fff; font-weight: 600; text-decoration: none; transition: transform .2s, box-shadow .2s; }
+  .btn:hover { transform: translateY(-3px); box-shadow: 0 10px 25px rgba(122,201,67,.45); }
+  .reveal { opacity: 0; transform: translateY(40px); transition: opacity .8s ease, transform .8s ease; }
+  .reveal.visible { opacity: 1; transform: none; }
+  @media (max-width: 800px) {
+    section { padding: 5rem 6vw; text-align: center; }
+    .col { width: 100%; }
+  }
+  @media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; transition: none; } }
+</style>
